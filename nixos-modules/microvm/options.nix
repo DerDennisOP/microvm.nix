@@ -27,6 +27,14 @@ in
       '';
     };
 
+    enableKvm = mkOption {
+      type = types.bool;
+      default = true;
+      description = ''
+        Whether to enable KVM for this MicroVM
+      '';
+    };
+
     hypervisor = mkOption {
       type = types.enum self-lib.hypervisors;
       default = "qemu";

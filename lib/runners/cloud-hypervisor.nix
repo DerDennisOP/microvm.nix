@@ -5,7 +5,7 @@
 
 let
   inherit (pkgs) lib system;
-  inherit (microvmConfig) vcpu mem balloonMem user interfaces volumes shares socket devices hugepageMem graphics storeDisk storeOnDisk kernel initrdPath;
+  inherit (microvmConfig) enableKvm vcpu mem balloonMem user interfaces volumes shares socket devices hugepageMem graphics storeDisk storeOnDisk kernel initrdPath;
   inherit (microvmConfig.cloud-hypervisor) extraArgs;
 
   kernelPath = {
@@ -131,7 +131,7 @@ in {
          then "${pkgs.cloud-hypervisor-graphics}/bin/cloud-hypervisor"
          else "${pkgs.cloud-hypervisor}/bin/cloud-hypervisor"
         )
-        "--cpus" "boot=${toString vcpu}"
+        "--cpus" "boot=${toString vcpu}${lib.optionalString (!enableKvm) ",kvm=off"}"
         "--watchdog"
         "--console" "null"
         "--serial" "tty"
